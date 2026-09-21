@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUHI'S TOUGHEST QUIZ</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at top left, #ffd6e8, transparent 40%),
+        radial-gradient(circle at bottom right, #ff9fc5, transparent 45%),
+        linear-gradient(135deg, #ffb6d5, #ffd6e7, #ff9fc5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #5c1735;
+}
+
+/* PAGES */
+
+.page {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.page.active {
+    display: flex;
+    animation: fadeIn 0.45s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* CARD */
+
+.card {
+    width: min(90%, 700px);
+    padding: 50px 35px;
+    border-radius: 35px;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid rgba(255,255,255,0.55);
+
+    box-shadow:
+        0 25px 60px rgba(100,20,60,0.18),
+        inset 0 1px 2px rgba(255,255,255,0.8);
+}
+
+/* TEXT */
+
+h1 {
+    font-size: clamp(2.3rem, 7vw, 4.5rem);
+    font-weight: 900;
+    margin-bottom: 20px;
+    letter-spacing: -2px;
+    line-height: 1.05;
+}
+
+h2 {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    margin: 25px 0;
+    font-weight: 900;
+    line-height: 1.1;
+}
+
+p {
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+/* BUTTONS */
+
+.options {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+button {
+    border: none;
+    padding: 17px 35px;
+    min-width: 150px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.75);
+    color: #761c45;
+    font-size: 1.1rem;
+    font-weight: 900;
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 25px rgba(100,20,60,0.15);
+
+    transition: 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-5px) scale(1.04);
+    background: white;
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+/* WRONG */
+
+.wrong {
+    background: #000;
+    color: white;
+}
+
+.wrong .card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+.wrong h1 {
+    font-size: clamp(3rem, 10vw, 7rem);
+    color: white;
+}
+
+.wrong button {
+    background: white;
+    color: black;
+}
+
+/* CORRECT */
+
+.correct {
+    background:
+        radial-gradient(circle at center, #ffd8e8, #ff9fc5);
+}
+
+.correct h1 {
+    font-size: clamp(3rem, 9vw, 6rem);
+    animation: correctPop 0.7s ease;
+}
+
+@keyframes correctPop {
+
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* WINNER */
+
+.winner h1 {
+    font-size: clamp(3rem, 9vw, 6rem);
+    animation: bounce 0.8s infinite alternate;
+}
+
+@keyframes bounce {
+
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.08);
+    }
+}
+
+/* SOJA */
+
+.sleep h1 {
+    font-size: clamp(4rem, 12vw, 8rem);
+}
+
+/* JK */
+
+.jk {
+    cursor: pointer;
+}
+
+.jk h1 {
+    font-size: clamp(5rem, 15vw, 10rem);
+}
+
+/* BIRTHDAY */
+
+.birthday {
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-items: center;
+    justify-content: center;
+}
+
+.birthday .card {
+    width: min(92%, 900px);
+    max-width: 900px;
+    padding: 45px 30px;
+    text-align: center;
+    margin: auto;
+}
+
+/* BIG BIRTHDAY HEADING */
+
+.birthday h1 {
+    color: #ff247d;
+
+    text-shadow:
+        0 5px 20px rgba(255,0,100,0.25);
+
+    font-size: clamp(2rem, 6vw, 4.2rem);
+
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+
+    text-align: center;
+
+    width: 100%;
+    max-width: 100%;
+
+    overflow-wrap: break-word;
+    word-break: normal;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    animation: birthdayPulse 1s infinite alternate;
+}
+
+@keyframes birthdayPulse {
+
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.025);
+    }
+}
+
+/* EMOJIS */
+
+.emojis {
+    font-size: clamp(2rem, 6vw, 4rem);
+    margin: 25px 0;
+    line-height: 1.3;
+    animation: float 2s infinite ease-in-out;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+@keyframes float {
+
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+/* BIRTHDAY TEXT */
+
+.birthday-text {
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    line-height: 1.7;
+    font-weight: 700;
+    text-align: center;
+    max-width: 800px;
+    margin: auto;
+}
+
+/* FLOATING HEARTS */
+
+.heart {
+    position: fixed;
+    bottom: -50px;
+    font-size: 25px;
+    animation: rise linear forwards;
+    pointer-events: none;
+    z-index: 999;
+}
+
+@keyframes rise {
+
+    from {
+        transform:
+            translateY(0)
+            rotate(0deg);
+        opacity: 1;
+    }
+
+    to {
+        transform:
+            translateY(-110vh)
+            rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* MOBILE */
+
+@media(max-width:600px) {
+
+    .page {
+        padding: 12px;
+    }
+
+    .card {
+        width: 94%;
+        padding: 40px 20px;
+        border-radius: 28px;
+    }
+
+    button {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .options {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .birthday .card {
+        width: 96%;
+        padding: 30px 16px;
+    }
+
+    .birthday h1 {
+        font-size: clamp(1.8rem, 9vw, 3rem);
+        letter-spacing: -1px;
+        line-height: 1.08;
+    }
+
+    .emojis {
+        font-size: clamp(1.6rem, 7vw, 2.5rem);
+        margin: 18px 0;
+    }
+}
+
+/* VERY SMALL PHONES */
+
+@media(max-width:380px) {
+
+    .birthday h1 {
+        font-size: 1.65rem;
+    }
+
+    .birthday-text {
+        font-size: 0.95rem;
+        line-height: 1.55;
+    }
+
+    .emojis {
+        font-size: 1.45rem;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- INTRO -->
+
+<div id="intro" class="page active">
+
+```
+<div class="card">
+
+    <h1>HELLLOOOOOO</h1>
+
+    <p>
+        WELCOME TO THE TOUGHEST QUIZ IN HUMAN HISTORY
+    </p>
+
+    <h2>START?</h2>
+
+    <div class="options">
+
+        <button onclick="showPage('q1')">
+            YES
+        </button>
+
+        <button onclick="showPage('q1')">
+            YES
+        </button>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- QUESTION 1 -->
+
+<div id="q1" class="page">
+
+```
+<div class="card">
+
+    <h1>QUESTION 1</h1>
+
+    <h2>WHAT IS MY NAME?</h2>
+
+    <div class="options">
+
+        <button onclick="wrongAnswer('q1')">
+            KANYE WEST
+        </button>
+
+        <button onclick="correctAnswer('correct1')">
+            PAAVAN
+        </button>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- CORRECT 1 -->
+
+<div id="correct1" class="page correct">
+
+```
+<div class="card">
+
+    <h1>CORRECT 😌</h1>
+
+    <p>
+        WAAH YAAR TU TO JAANTI HAI MUJHE
+    </p>
+
+    <br>
+
+    <button onclick="showPage('q2')">
+        NEXT →
+    </button>
+
+</div>
+```
+
+</div>
+
+<!-- QUESTION 2 -->
+
+<div id="q2" class="page">
+
+```
+<div class="card">
+
+    <h1>QUESTION 2</h1>
+
+    <h2>WHO IS THE BIRTHDAY GIRL?</h2>
+
+    <div class="options">
+
+        <button onclick="correctAnswer('correct2')">
+            JUHI
+        </button>
+
+        <button onclick="wrongAnswer('q2')">
+            SOME RANDOM GIRL
+        </button>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- CORRECT 2 -->
+
+<div id="correct2" class="page correct">
+
+```
+<div class="card">
+
+    <h1>CORRECT 😭</h1>
+
+    <p>
+        ABE LEKIN BIRTHDAY TO BAUNI KA HAI
+    </p>
+
+    <br>
+
+    <button onclick="showPage('q3')">
+        NEXT →
+    </button>
+
+</div>
+```
+
+</div>
+
+<!-- QUESTION 3 -->
+
+<div id="q3" class="page">
+
+```
+<div class="card">
+
+    <h1>QUESTION 3</h1>
+
+    <h2>WHO IS MORE ANNOYING?</h2>
+
+    <div class="options">
+
+        <button onclick="correctAnswer('correct3')">
+            PAAVAN
+        </button>
+
+        <button onclick="correctAnswer('correct3')">
+            ALSO PAAVAN
+        </button>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- CORRECT 3 -->
+
+<div id="correct3" class="page correct">
+
+```
+<div class="card">
+
+    <h1>CORRECT 💀</h1>
+
+    <p>
+        HDD HAI
+    </p>
+
+    <br>
+
+    <button onclick="showPage('winner')">
+        NEXT →
+    </button>
+
+</div>
+```
+
+</div>
+
+<!-- WRONG -->
+
+<div id="wrong" class="page wrong">
+
+```
+<div class="card">
+
+    <h1>BTAU ABHI 😠</h1>
+
+    <button id="returnButton">
+        RETURN BACK
+    </button>
+
+</div>
+```
+
+</div>
+
+<!-- WINNER -->
+
+<div id="winner" class="page winner">
+
+```
+<div class="card">
+
+    <h1>
+        YAYYY<br>
+        JEEET GAYEEEE 🎉
+    </h1>
+
+    <h2>
+        KYA JEETE????
+    </h2>
+
+    <button onclick="showPage('sleep')">
+        FIND OUT
+    </button>
+
+</div>
+```
+
+</div>
+
+<!-- SOJA -->
+
+<div id="sleep" class="page sleep">
+
+```
+<div class="card">
+
+    <h1>KADDU</h1>
+
+    <button onclick="showPage('jk')">
+        OKAY 😭
+    </button>
+
+</div>
+```
+
+</div>
+
+<!-- JK -->
+
+<div id="jk" class="page jk">
+
+```
+<div class="card">
+
+    <h1>JK 
+💀</h1>
+
+</div>
+```
+
+</div>
+
+<!-- BIRTHDAY -->
+
+<div id="birthday" class="page birthday">
+
+```
+<div class="card">
+
+    <div class="emojis">
+        🎉 🎀 💗  🫶🏻 💐 ✨ 💞
+    </div>
+
+    <h1>
+        HAPPPPPPPPPPPYYYYYYYYYYY<br>
+        BIRTHDAYYYYYYYYYYYYYYYYYYYYY!!!!!!
+    </h1>
+
+    <div class="emojis">
+        💗🎀💐🫶🏻✨💞
+    </div>
+
+    <p class="birthday-text">
+
+        YOU ACTUALLY MADE IT 😭😭😭
+
+        <br><br>
+
+        HAPPY BIRTHDAY JUHIIIIIIII 💗
+
+        <br><br>
+
+       YYAYYYAYYAYYYAYYY
+       PARTY DE CHL AB 😭😭😭
+       MAZAAK SORRY
+
+        <br><br>
+
+        THANK YOU FOR BEING YOU 🫶🏻
+
+        <br><br>
+
+        MAZE KRNAAAA 
+        KYA TIME WASTE KR RHI 
+        BEKAAR SI QUIZ ME 
+
+        <br><br>
+
+        🎂🎉 HAPPY BIRTHDAYYYYY 🎉🎂
+
+    </p>
+
+</div>
+```
+
+</div>
+
+<script>
+
+/* PAGE SWITCHING */
+
+function showPage(pageId) {
+
+    document.querySelectorAll('.page').forEach(function(page) {
+        page.classList.remove('active');
+    });
+
+    document.getElementById(pageId).classList.add('active');
+
+    if (pageId === 'birthday') {
+        startHearts();
+    }
+
+    if (pageId === 'jk') {
+
+        setTimeout(function() {
+
+            if (
+                document
+                .getElementById('jk')
+                .classList
+                .contains('active')
+            ) {
+
+                showPage('birthday');
+
+            }
+
+        }, 2000);
+    }
+}
+
+
+/* CORRECT ANSWERS */
+
+function correctAnswer(pageId) {
+    showPage(pageId);
+}
+
+
+/* WRONG ANSWERS */
+
+let previousQuestion = 'q1';
+
+function wrongAnswer(question) {
+
+    previousQuestion = question;
+
+    showPage('wrong');
+}
+
+
+/* RETURN BUTTON */
+
+document
+.getElementById('returnButton')
+.onclick = function() {
+
+    showPage(previousQuestion);
+
+};
+
+
+/* CLICK JK */
+
+document
+.getElementById('jk')
+.addEventListener('click', function() {
+
+    showPage('birthday');
+
+});
+
+
+/* FLOATING HEARTS */
+
+let heartsStarted = false;
+
+function startHearts() {
+
+    if (heartsStarted) {
+        return;
+    }
+
+    heartsStarted = true;
+
+    setInterval(function() {
+
+        const heart = document.createElement('div');
+
+        heart.className = 'heart';
+
+        const emojis = [
+            '💗',
+            '💖',
+            '✨',
+            '💐',
+            '🫶🏻'
+        ];
+
+        heart.innerText =
+            emojis[
+                Math.floor(
+                    Math.random() * emojis.length
+                )
+            ];
+
+        heart.style.left =
+            Math.random() * 100 + 'vw';
+
+        heart.style.animationDuration =
+            (Math.random() * 4 + 4) + 's';
+
+        heart.style.fontSize =
+            (Math.random() * 20 + 18) + 'px';
+
+        document.body.appendChild(heart);
+
+        setTimeout(function() {
+            heart.remove();
+        }, 8000);
+
+    }, 350);
+
+}
+
+</script>
+
+</body>
+</html>
